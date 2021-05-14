@@ -2,7 +2,7 @@ import cuid from 'cuid';
 import React,{ useState,useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import { Button, Form, Header, Segment } from 'semantic-ui-react'
+import { Button, Dropdown, Form, Header, Segment } from 'semantic-ui-react'
 import { createEvent, updateEvent } from '../eventActions';
 
 function EventForm({match}) {
@@ -22,8 +22,9 @@ function EventForm({match}) {
 	};
 	const [values,setValues] = useState(initialValue)
 	const [title,setTitle] = useState('')
-
-	function handleFormSubmit(){
+	const [val,setVal] = useState('tikki')
+	function handleFormSubmit(e){
+		// e.preventDefault()
 		// selectedEvent and values both are objects, here in updateEvent 
 		// make a copy of selectedEvent and update fields with values object
 		// values object is a subset of selectedEvent object					 
@@ -42,6 +43,9 @@ function EventForm({match}) {
 		// console.log(values)
 	}
 
+	function handleSelect(e){
+		console.log(e.target.value);
+	}
 	useEffect(()=>{
 		// {...initialValue,'title':'abcm'}
 		initialValue = selectedEvent ?? {
@@ -54,6 +58,19 @@ function EventForm({match}) {
 		};
 		setValues(initialValue)
 	},[selectedEvent])
+
+	const travelCategoryOptions = [
+		{
+			key:'travel',
+			text:'travel',
+			value:'travel'
+		},
+		{
+			key:'party',
+			text:'party',
+			value:'party'
+		}
+	]
 	return (
 		<Segment style={{paddingBottom:'50px'}}>
 			<Header content={selectedEvent ? "Edit Event" : "Create new event"} />
@@ -66,21 +83,41 @@ function EventForm({match}) {
 						value={values.title} 
 						onChange={(e) => {handleInputChange(e)}} />
 				</Form.Field>
-				<Form.Field>
+				{/* <Form.Field>
+
 					<input 
 						type="text" 
 						placeholder="Category"
 						name="category"
 						value={values.category} 
 						onChange={(e) => {handleInputChange(e)}} />
+						
+				</Form.Field> */}
+				<Form.Field>
+
+					<select 
+						placeholder="lele" 
+						// defaultValue={''} 
+						name="category" 
+						onChange={(e) => {handleInputChange(e)}} >
+							<option value="">Select Category</option>
+							<option value="culture">Culture</option>
+							<option value="travel">Travel</option>
+							<option value="film">Film</option>
+							<option value="food">Food</option>
+							<option value="music">Music</option>
+							{/* <option value="travel">Radish</option> */}
+					</select>	
+						
 				</Form.Field>
 				<Form.Field>
-					<input 
+					<textarea 
 						type="text" 
 						placeholder="Description"
 						name="description"
 						value={values.description} 
 						onChange={(e) => {handleInputChange(e)}} />
+					
 				</Form.Field>
 				<Form.Field>
 					<input 

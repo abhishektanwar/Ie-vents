@@ -1,11 +1,11 @@
 import React from 'react'
 import EventListItem from './EventListItem'
 
-function EventList({events,selectEvent,deleteEvent}) {
+function EventList({events}) {
 	return (
 		<>	
 			{events.map(event =>(
-				<EventListItem key={event.id} deleteEvent={deleteEvent} event={event} selectEvent={selectEvent} />
+				<EventListItem key={event.id} event={event} />
 			))}
 		</>
 	)
