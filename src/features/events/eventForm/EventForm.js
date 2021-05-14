@@ -1,10 +1,17 @@
 import cuid from 'cuid';
 import React,{ useState,useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
 import { Button, Form, Header, Segment } from 'semantic-ui-react'
+import { createEvent, updateEvent } from '../eventActions';
 
-function EventForm({setFormOpen,setEvents,createEvent,selectedEvent,updateEvent}) {
+function EventForm({match}) {
+
+	const selectedEvent = useSelector(state => state.event.events.find(e => e.id === match.params.id))
+	const dispatch = useDispatch()
+	const history = useHistory()
 	// selectedEvent ?? => if selectedEvent == null , set right of ?? to initialvalues else set selectedEvent to initialValues
-	console.log(selectedEvent,"from")
+	// console.log(selectedEvent,"from")
 	let initialValue = selectedEvent ?? {
 		'title':'',
 		'category':'',
@@ -21,11 +28,12 @@ function EventForm({setFormOpen,setEvents,createEvent,selectedEvent,updateEvent}
 		// make a copy of selectedEvent and update fields with values object
 		// values object is a subset of selectedEvent object					 
 		selectedEvent ? 
-			updateEvent({...selectedEvent,...values})
+			dispatch(updateEvent({...selectedEvent,...values}))
 			: 
-			createEvent({...values,id:cuid(),attendees:[],hostedBy:'bob the builder',photoURL:"/assets/user.png"})
+			dispatch(createEvent({...values,id:cuid(),attendees:[],hostedBy:'bob the builder',hostPhotoURL:"/assets/user.png"}))
 			console.log({...values})
-			setFormOpen(false)
+			// setFormOpen(false)
+			history.push('/events')
 	}
 
 	function handleInputChange(e){
@@ -99,7 +107,7 @@ function EventForm({setFormOpen,setEvents,createEvent,selectedEvent,updateEvent}
 						onChange={(e) => {handleInputChange(e)}} />
 				</Form.Field>
 				<Button type="submit" floated='right' positive content={selectedEvent ? 'Update' : 'Create'} />
-				<Button onClick={()=>setFormOpen(false)} type="submit" floated='right' content='Cancel' />
+				<Button as={Link} to='/events' type="submit" floated='right' content='Cancel' />
 				
 			</Form>
 		</Segment>

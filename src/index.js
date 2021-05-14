@@ -4,12 +4,19 @@ import App from '../src/app/layout/App';
 import 'semantic-ui-css/semantic.min.css'
 import './app/layout/styles.css'
 import { BrowserRouter as Router } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { configureStore } from './app/store/configureStore';
 
+const store = configureStore()
+console.log(store.getState());
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
-      <App />
-    </Router>
+    <Provider store={store}>
+      <Router>
+        <App />
+      </Router>
+    </Provider>
+    
   </React.StrictMode>,
   document.getElementById('root')
 );
