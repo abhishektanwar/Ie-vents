@@ -1,7 +1,8 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Icon, Item, Segment,List,Button } from 'semantic-ui-react'
+import { Icon, Item, Segment,List,Button, Label } from 'semantic-ui-react'
+import { deleteEventInFIrestore } from '../../../app/firestore/firestoreService'
 import { deleteEvent } from '../eventActions'
 import EventListAttendee from './EventListAttendee'
 
@@ -16,8 +17,13 @@ function EventListItem({event}) {
 							<Item.Image size='tiny' circular src={event.hostPhotoURL} />
 							<Item.Content>
 								<Item.Header content={event.title} />
-								<Item.Description>
+								<Item.Description style={{display:'flex',justifyContent:'space-between'}}>
 									Hosted by {event.hostedBy}
+									{event.isCancelled && (
+										<div style={{backgroundColor:'red',maxWidth:'250px' ,color:'white',height:'30px',borderRadius:'5px',textAlign:'center',paddingTop:'5px',paddingLeft:'5px',paddingRight:'5px'}} >
+											<span>This event has been cancelled </span>
+										</div>
+									)}
 								</Item.Description>
 							</Item.Content>
 							</Item>
@@ -49,7 +55,7 @@ function EventListItem({event}) {
 								// console.log(event)
 								style={{maxHeight:'50px','marginBottom':'10px'}} floated='right' color='teal'>View</Button>
 							<Button onClick={()=>{
-								dispatch(deleteEvent(event.id))
+								deleteEventInFIrestore(event.id)
 								console.log(event)
 								}} style={{maxHeight:'50px','background':'red','color':'white'}} floated='right' >Delete</Button>	
 						</div>

@@ -15,13 +15,15 @@ function SignedInMenu({setAuthenticated}) {
 				<Dropdown.Menu>
 					<Dropdown.Item as={Link} to='createEvent' text='Create Event' icon='plus' />
 					<Dropdown.Item text='My Profile' icon='link' />
+					<Dropdown.Item as={Link} to='account' text='My Account' icon='edit' />
 					<Dropdown.Item onClick={()=>{
-						dispatch(signOutUser())
+						// dispatch(signOutUser())
+						signOutUser()
 						history.push('/')
 					}
 					} text='Signout' icon='power' />
 				</Dropdown.Menu>
-			</Dropdown>	
+			</Dropdown>
 		</Menu.Item>
 	)
 }

@@ -4,12 +4,13 @@ import { Button, Dropdown, Form, Header, Segment } from 'semantic-ui-react'
 import { useDispatch } from 'react-redux'
 import { signInUser } from '../auth/authActions'
 import { closeModal } from '../../app/common/modals/modalReducer'
-import { toast } from 'react-toastify'
+import { registerInFirestore } from '../../app/firestore/firebaseService'
 
-function LoginForm() {
+function RegisterForm() {
 	let initialValue = {
 		'email':'',
-		'password':''
+		'password':'',
+		'displayName':''
 	};
 	const [values,setValues] = useState(initialValue)
 	const dispatch = useDispatch()
@@ -19,29 +20,36 @@ function LoginForm() {
 		// console.log(values)
 	}
 
-	async function handleFormSubmit(e){
-		try{
+	function handleFormSubmit(e){
+
 			console.log(values)
-			await dispatch(signInUser(values))
+			// dispatch(signInUser(values))
+			registerInFirestore(values)
 			console.log({...values})
 			dispatch(closeModal())
-		}
-		catch (error){
-			toast.error("Try again")
-		}
-			
 			// setFormOpen(false)
 			// history.push('/events')
 	}
 
 	return (
-		<ModalWrapper size='mini' header='Sign In to Ie-vents'>
+		<ModalWrapper size='mini' header='Register In to Ie-vents'>
 			<Form onSubmit={handleFormSubmit}>
 				<Form.Field>
 					<input 
 						type="email" 
 						placeholder="Email Address" 
 						name="email"
+						required
+						// value={values.title} 
+						onChange={(e) => {handleInputChange(e)}} 
+						/>
+				</Form.Field>
+				<Form.Field>
+					<input 
+						type="text" 
+						placeholder="Name" 
+						name="displayName"
+						required
 						// value={values.title} 
 						onChange={(e) => {handleInputChange(e)}} 
 						/>
@@ -52,13 +60,14 @@ function LoginForm() {
 						type="password" 
 						placeholder="Password"
 						name="password"
+						required
 						// value={values.description} 
 						onChange={(e) => {handleInputChange(e)}} 
 						/>
 					
 				</Form.Field>
 				
-				<Button type="submit" floated='right' positive content='Login' />
+				<Button type="submit" floated='right' positive content='Register' />
 
 				
 			</Form>
@@ -66,4 +75,4 @@ function LoginForm() {
 	)
 }
 
-export default LoginForm
+export default RegisterForm

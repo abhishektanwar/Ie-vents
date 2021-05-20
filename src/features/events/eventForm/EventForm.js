@@ -2,13 +2,27 @@ import cuid from 'cuid';
 import React,{ useState,useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { Button, Dropdown, Form, Header, Segment } from 'semantic-ui-react'
-import { createEvent, updateEvent } from '../eventActions';
+import { addEventToFirestore, cancelEventToggle, listenToEventFromFirestore, updateEventInFirestore } from '../../../app/firestore/firestoreService';
+import useFirestoreDoc from '../../../app/hooks/useFirestoreDoc';
+import LoadingComponent from '../../../app/layout/LoadingComponent';
+import { createEvent, listenToEvents, updateEvent } from '../eventActions';
 
 function EventForm({match}) {
-
-	const selectedEvent = useSelector(state => state.event.events.find(e => e.id === match.params.id))
 	const dispatch = useDispatch()
+	// const selectedEvent = useSelector(state => state.event.events.find(e => e.id === match.params.id))
+	// const {selectedEvent} = useSelector(state=>state.event)
+	// using useSelector conditionally
+	const selectedEvent = useSelector(state =>{
+		if(match.params.id){
+			return state.event.events.find(e => e.id === match.params.id)
+		}
+		else{
+			return null;
+		}
+	})
+	const {loading} = useSelector(state => state.async)
 	const history = useHistory()
 	// selectedEvent ?? => if selectedEvent == null , set right of ?? to initialvalues else set selectedEvent to initialValues
 	// console.log(selectedEvent,"from")
@@ -23,18 +37,39 @@ function EventForm({match}) {
 	const [values,setValues] = useState(initialValue)
 	const [title,setTitle] = useState('')
 	const [val,setVal] = useState('tikki')
-	function handleFormSubmit(e){
+	async function handleFormSubmit(e){
 		// e.preventDefault()
 		// selectedEvent and values both are objects, here in updateEvent 
 		// make a copy of selectedEvent and update fields with values object
 		// values object is a subset of selectedEvent object					 
-		selectedEvent ? 
-			dispatch(updateEvent({...selectedEvent,...values}))
+		 
+		try{
+			selectedEvent ?
+			// dispatch(updateEvent({...selectedEvent,...values}))
+			await updateEventInFirestore(values)
 			: 
-			dispatch(createEvent({...values,id:cuid(),attendees:[],hostedBy:'bob the builder',hostPhotoURL:"/assets/user.png"}))
-			console.log({...values})
+			await addEventToFirestore(values)
+			// dispatch(createEvent({...values,id:cuid(),attendees:[],hostedBy:'bob the builder',hostPhotoURL:"/assets/user.png"}))
+			// await 
+			// console.log({...values})
 			// setFormOpen(false)
 			history.push('/events')
+		}
+		catch(error) {
+			toast.error(error.message)
+		}
+	
+			// selectedEvent ?
+			// dispatch(updateEvent({...selectedEvent,...values}))
+			// // await updateEventInFirestore(values)
+			// : 
+			// // await addEventToFirestore(values)
+			// dispatch(createEvent({...values,id:cuid(),attendees:[],hostedBy:'bob the builder',hostPhotoURL:"/assets/user.png"}))
+			// // await 
+			// // console.log({...values})
+			// // setFormOpen(false)
+			// history.push('/events')
+
 	}
 
 	function handleInputChange(e){
@@ -59,18 +94,28 @@ function EventForm({match}) {
 		setValues(initialValue)
 	},[selectedEvent])
 
-	const travelCategoryOptions = [
-		{
-			key:'travel',
-			text:'travel',
-			value:'travel'
-		},
-		{
-			key:'party',
-			text:'party',
-			value:'party'
-		}
-	]
+	// const travelCategoryOptions = [
+	// 	{
+	// 		key:'travel',
+	// 		text:'travel',
+	// 		value:'travel'
+	// 	},
+	// 	{
+	// 		key:'party',
+	// 		text:'party',
+	// 		value:'party'
+	// 	}
+	// ]
+
+	useFirestoreDoc({
+		shouldExecute:!!match.params.id,
+		query:()=>listenToEventFromFirestore(match.params.id),
+		data:(event)=>dispatch(listenToEvents([event])),
+		dependency:[match.params.id,dispatch]
+
+	})
+
+	if (loading) return <LoadingComponent content="loading ..." />
 	return (
 		<Segment style={{paddingBottom:'50px'}}>
 			<Header content={selectedEvent ? "Edit Event" : "Create new event"} />
@@ -145,6 +190,16 @@ function EventForm({match}) {
 				</Form.Field>
 				<Button type="submit" floated='right' positive content={selectedEvent ? 'Update' : 'Create'} />
 				<Button as={Link} to='/events' type="submit" floated='right' content='Cancel' />
+				{selectedEvent ? <Button 
+					type="button" 
+					floated='lefta' 
+					color={selectedEvent.isCancelled ? 'green' : 'red'}
+					content={selectedEvent.isCancelled ? 'Reactivate Event' : 'Cancel Event'} 
+					onClick={()=>{cancelEventToggle(selectedEvent)}}
+					/>
+				:
+				null}
+				
 				
 			</Form>
 		</Segment>
