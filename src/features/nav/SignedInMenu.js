@@ -14,7 +14,7 @@ function SignedInMenu({setAuthenticated}) {
 			<Dropdown pointing='top left' text = {currentUser.email}>
 				<Dropdown.Menu>
 					<Dropdown.Item as={Link} to='createEvent' text='Create Event' icon='plus' />
-					<Dropdown.Item text='My Profile' icon='link' />
+					<Dropdown.Item as={Link} to={`/profile/${currentUser.uid}`} text='My Profile' icon='link' />
 					<Dropdown.Item as={Link} to='account' text='My Account' icon='edit' />
 					<Dropdown.Item onClick={()=>{
 						// dispatch(signOutUser())

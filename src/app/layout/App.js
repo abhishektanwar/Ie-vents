@@ -9,6 +9,7 @@ import Sandbox from '../../features/sandbox/Sandbox';
 import ModalManager from '../common/modals/ModalManager';
 import {ToastContainer} from 'react-toastify';
 import AccountPage from '../../features/auth/AccountPage';
+import ProfilePage from '../../features/profiles/profilePage/ProfilePage';
 function App() {
 
 	const {key} = useLocation()
@@ -31,6 +32,7 @@ function App() {
 							<Route path={['/createEvent','/manage/:id' ]}component={EventForm} key={key} />
 							{/* <EventDashboard formOpen={formOpen} setFormOpen={setFormOpen} selectEvent={handleSelectEvent} selectedEvent={selectedEvent} /> */}
 							<Route path='/account' component={AccountPage} />
+							<Route path='/profile/:id' component={ProfilePage} />
 						</Container>
 					</>
 					
