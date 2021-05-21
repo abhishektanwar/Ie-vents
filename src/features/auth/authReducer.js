@@ -6,14 +6,19 @@ const initialState = {
 }
 
 export default function authReducer(state=initialState,{type,payload}){
+	// console.log("payload curr",payload)
 	switch(type){
 		case SIGN_IN_USER :
 			return{
 				...state,
 				authenticated:true,
+				
 				currentUser:{
 					email:payload.email,
-					photoURL:'/assets/user.png'
+					photoURL:payload.photoURL,
+					uid: payload.uid,
+          			displayName: payload.displayName,
+
 				}
 			}
 		

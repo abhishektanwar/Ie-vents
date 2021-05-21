@@ -15,6 +15,10 @@ export async function registerInFirestore(creds){
 	}
 }
 
+export function signInWithEmail(creds){
+	return firebase.auth().signInWithEmailAndPassword(creds.email,creds.password);
+}
+
 export function updateUserPassword(creds){
 	const user = firebase.auth().currentUser;
 	console.log(creds)

@@ -16,6 +16,7 @@ function useFirestoreDoc({query,data,dependency,execute=true}) {
 			// 	}))
 			// 	return;
 			// }
+			
 			data(dataFromSnapshot(snap))
 			dispatch(asyncActionFinish())
 		},

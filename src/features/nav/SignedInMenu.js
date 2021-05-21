@@ -8,10 +8,12 @@ function SignedInMenu({setAuthenticated}) {
 	const dispatch = useDispatch()
 	const history = useHistory()
 	const {currentUser} = useSelector(state => state.auth)
+	console.log("uid",currentUser)
 	return (
 		<Menu.Item position="right">
 			<Image avatar spaced='right' src={currentUser.photoURL || 'assets/user.png' } />
 			<Dropdown pointing='top left' text = {currentUser.email}>
+				
 				<Dropdown.Menu>
 					<Dropdown.Item as={Link} to='createEvent' text='Create Event' icon='plus' />
 					<Dropdown.Item as={Link} to={`/profile/${currentUser.uid}`} text='My Profile' icon='link' />

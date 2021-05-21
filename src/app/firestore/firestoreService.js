@@ -73,6 +73,13 @@ export function setUserProfileData(user){
 		createdAt:firebase.firestore.FieldValue.serverTimestamp()
 	})
 }
+
+// get current user profile
+export function getUserProfile(userId){
+	console.log("db.collection('users').doc(userId)",db.collection('users').doc(userId));
+	return db.collection('users').doc(userId);
+}
+
 // useEffect(()=>{
 // 	const unsubscribe = getEventsFromFirestore({
 // 		next:snapshot => dispatch(listenToEvents(snapshot.docs.map(docSnapshot => dataFromSnapshot(docSnapshot)))),

@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 import { signInUser } from '../auth/authActions'
 import { closeModal } from '../../app/common/modals/modalReducer'
 import { toast } from 'react-toastify'
+import { signInWithEmail } from '../../app/firestore/firebaseService'
 
 function LoginForm() {
 	let initialValue = {
@@ -19,20 +20,46 @@ function LoginForm() {
 		// console.log(values)
 	}
 
-	async function handleFormSubmit(e){
+	const handleFormSubmit =async (e) =>{
 		try{
-			console.log(values)
-			await dispatch(signInUser(values))
-			console.log({...values})
+			await signInWithEmail(values)
 			dispatch(closeModal())
 		}
-		catch (error){
-			toast.error("Try again")
+		catch(error){
+			console.log("error login",error)
 		}
-			
-			// setFormOpen(false)
-			// history.push('/events')
+		
 	}
+
+	// async function handleFormSubmit(e){
+	// 	try{
+	// 		console.log(values)
+	// 		await dispatch(signInUser(values))
+	// 		console.log({...values})
+	// 		dispatch(closeModal())
+	// 	}
+	// 	catch (error){
+	// 		toast.error("Try again")
+	// 	}
+			
+	// 		// setFormOpen(false)
+	// 		// history.push('/events')
+	// }
+
+	// async function handleFormSubmit(e){
+	// 		try{
+	// 			console.log(values)
+	// 			await signInWithEmail(values)
+	// 			console.log({...values})
+	// 			dispatch(closeModal())
+	// 		}
+	// 		catch (error){
+	// 			toast.error("Try again")
+	// 		}
+				
+	// 			// setFormOpen(false)
+	// 			// history.push('/events')
+	// 	}
 
 	return (
 		<ModalWrapper size='mini' header='Sign In to Ie-vents'>
