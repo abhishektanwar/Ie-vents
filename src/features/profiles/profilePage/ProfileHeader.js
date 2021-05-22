@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Divider, Grid, Header, Item, Reveal, Segment, Statistic } from 'semantic-ui-react'
 
-function ProfileHeader({profile}) {
+function ProfileHeader({profile ,isCurrentUser}) {
 	return (
 		<Segment>
 			<Grid>
@@ -21,14 +21,18 @@ function ProfileHeader({profile}) {
 						<Statistic label='following' value={5} />
 					</Statistic.Group>
 					<Divider />
-					<Reveal animated='move'>
-						<Reveal.Content visible style={{width:'100%'}}>
-							<Button fluid color='teal' content='Following' />
-						</Reveal.Content>
-						<Reveal.Content hidden style={{width:'100%'}}>
-							<Button basic fluid color='red' content='Unfollow' />
-						</Reveal.Content>
-					</Reveal>
+					{!isCurrentUser &&
+					<>
+						<Reveal animated='move'>
+							<Reveal.Content visible style={{width:'100%'}}>
+								<Button fluid color='teal' content='Following' />
+							</Reveal.Content>
+							<Reveal.Content hidden style={{width:'100%'}}>
+								<Button basic fluid color='red' content='Unfollow' />
+							</Reveal.Content>
+						</Reveal>
+					</>
+					}
 				</Grid.Column>
 			</Grid>
 		</Segment>

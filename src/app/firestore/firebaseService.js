@@ -24,3 +24,12 @@ export function updateUserPassword(creds){
 	console.log(creds)
 	return user.updatePassword(creds)
 }
+
+// img uppload from PhotoWidget
+export function uploadToFirebaseStorage(file,filename){
+	const user = firebase.auth().currentUser
+	const storageRef = firebase.storage().ref();
+	// uploading to firestore storage here
+	return storageRef.child(`${user.uid}/user_images/${filename}`).put(file);
+	// this will return download url 
+}

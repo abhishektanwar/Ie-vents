@@ -7,7 +7,7 @@ function useFirestoreCollection({query,data,dependency}) {
 	const dispatch = useDispatch()
 
 	useEffect(()=>{
-		dispatch(asyncActionStart)
+		dispatch(asyncActionStart())
 		const unsubscribe = query().onSnapshot(
 			snapshot =>{
 				const docs = snapshot.docs.map(doc => dataFromSnapshot(doc))

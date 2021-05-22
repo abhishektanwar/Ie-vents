@@ -1,5 +1,7 @@
 import { SIGN_IN_USER, SIGN_OUT_USER } from "./authConstants";
 import firebase from 'firebase/app'
+import { dataFromSnapshot, getUserProfile } from "../../app/firestore/firestoreService";
+import { listenToCurrentUserProfile } from "../profiles/profileActions";
 
 // export function signInUser(creds){
 // 	return async function(dispatch){
@@ -27,6 +29,10 @@ export function verifyAuth(){
 		return firebase.auth().onAuthStateChanged(user =>{
 			if (user){
 				dispatch(signInUser(user))
+				const profileRef = getUserProfile(user.uid)
+				profileRef.onSnapshot(snap =>{
+					dispatch(listenToCurrentUserProfile(dataFromSnapshot(snap)))
+				})
 				// dispatch({type:SIGN_IN_USER,payload:user})
 			}
 			else{

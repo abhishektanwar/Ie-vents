@@ -8,15 +8,17 @@ function SignedInMenu({setAuthenticated}) {
 	const dispatch = useDispatch()
 	const history = useHistory()
 	const {currentUser} = useSelector(state => state.auth)
+	const {currentUserProfile} = useSelector(state => state.profile)
 	console.log("uid",currentUser)
+	console.log("const {currentUserProfile} = useSelector(state => state.profile)",currentUserProfile);
 	return (
 		<Menu.Item position="right">
 			<Image avatar spaced='right' src={currentUser.photoURL || 'assets/user.png' } />
-			<Dropdown pointing='top left' text = {currentUser.email}>
+			<Dropdown pointing='top left' text = {currentUser.displayName}>
 				
 				<Dropdown.Menu>
 					<Dropdown.Item as={Link} to='createEvent' text='Create Event' icon='plus' />
-					<Dropdown.Item as={Link} to={`/profile/${currentUser.uid}`} text='My Profile' icon='link' />
+					<Dropdown.Item as={Link} to={`/profile/${currentUser.uid}`} text='My Profile' icon='user' />
 					<Dropdown.Item as={Link} to='account' text='My Account' icon='edit' />
 					<Dropdown.Item onClick={()=>{
 						// dispatch(signOutUser())

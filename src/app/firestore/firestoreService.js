@@ -80,6 +80,64 @@ export function getUserProfile(userId){
 	return db.collection('users').doc(userId);
 }
 
+// updating user profile : if current user != profile display name
+// update profile in firebase & update profile fully in user collection as well
+export async function updateUserProfile(profile){
+	// updating profile in auth,doesnt update profile in collection and firestore
+	const user = firebase.auth().currentUser;
+	try{
+		if (user.displayName !== profile.displayName){
+			await user.updateProfile({
+				displayName:profile.displayName
+			})
+			
+		}
+		return await db.collection('users').doc(user.uid).update(profile)
+	}
+	catch (error){
+		throw error
+	}
+} 
+
+export async function updateUserProfilePhoto(downloadURL,filename){
+	const user = firebase.auth().currentUser
+	console.log("user112",user)
+	const userDocRef = db.collection('users').doc(user.uid);
+	try{
+		const userDoc = await userDocRef.get();
+		// if user doesnt have photoURL set ,
+		// setting photo url also update photoURL in auth 
+		if(!userDoc.data().photoURL){
+			await db.collection('users').doc(user.uid).update({
+				photoURL:downloadURL
+			});
+			await user.updateProfile({
+				photoURL:downloadURL
+			})
+		}
+		// addinf photo to photos collection to thus user's collection
+		return await db.collection('users').doc(user.uid).collection('photos').add({
+			name:filename,
+			url:downloadURL
+		})
+	}
+	catch (error){
+		throw error;
+	}
+
+}
+
+
+export function getUserPhotos(userUid){
+	console.log("db.collection('users').doc(userUid).collection('photos')",
+	db.collection('users').doc(userUid).collection('photos')
+	.onSnapshot(snap=>{
+		snap.docs.map(doc=>console.log("docdoc",doc.data()))
+	})
+	)
+	return db.collection('users').doc(userUid).collection('photos')
+}
+
 // useEffect(()=>{
 // 	const unsubscribe = getEventsFromFirestore({
 // 		next:snapshot => dispatch(listenToEvents(snapshot.docs.map(docSnapshot => dataFromSnapshot(docSnapshot)))),

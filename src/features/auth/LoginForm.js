@@ -86,9 +86,15 @@ function LoginForm() {
 				</Form.Field>
 				
 				<Button type="submit" floated='right' positive content='Login' />
+				
 
 				
 			</Form>
+			<div style={{display:'block'}}>
+				<h3>Test Credentials</h3>
+				<p>Email : user4@test.com</p>
+				<p>Password : 123456</p>
+			</div>
 		</ModalWrapper>
 	)
 }

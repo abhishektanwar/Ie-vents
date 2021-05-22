@@ -1,10 +1,12 @@
 import React from 'react'
 import { Tab } from 'semantic-ui-react'
+import AboutTab from './AboutTab'
+import PhotosTab from './PhotosTab'
 
-function ProfileContent() {
+function ProfileContent({profile,isCurrentUser}) {
 	const panes = [
-		{menuItem:'About',render:()=><Tab.Pane>About User</Tab.Pane>},
-		{menuItem:'Photos',render:()=><Tab.Pane>Photos</Tab.Pane>},
+		{menuItem:'About',render:()=> <AboutTab profile={profile} isCurrentUser={isCurrentUser} />},
+		{menuItem:'Photos',render:()=><PhotosTab profile={profile} isCurrentUser={isCurrentUser}  />},
 		{menuItem:'Events',render:()=><Tab.Pane>Events</Tab.Pane>},
 		{menuItem:'Followers',render:()=><Tab.Pane>Followers</Tab.Pane>},
 		{menuItem:'Following',render:()=><Tab.Pane>Following</Tab.Pane>},
