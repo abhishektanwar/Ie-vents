@@ -39,11 +39,13 @@ export function listenToEventFromFirestore(eventId){
 }
 
 export function addEventToFirestore(event){
+	// console.log("hostedBy:",firebase.auth().currentUser.displayName)
+	// console.log("hostPhotoURL:",firebase.auth().currentUser.photoURL)
 	return db.collection('events').add({
 		...event,
-		hostedBy:'diana',
+		hostedBy:firebase.auth().currentUser.displayName,
 		isCancelled:false,
-		hostPhotoURL:'https://randomuser.me/api/portraits/women/20.jpg',
+		hostPhotoURL:firebase.auth().currentUser.photoURL,
 		attendees:firebase.firestore.FieldValue.arrayUnion({
 			id:cuid(),
 			displayName:'Diana',
@@ -138,6 +140,27 @@ export function getUserPhotos(userUid){
 	return db.collection('users').doc(userUid).collection('photos')
 }
 
+// set main photo
+export async function setMainPhoto(photo){
+	const user = firebase.auth().currentUser
+	try{
+		await db.collection('users').doc(user.uid).update({
+			photoURL:photo.url
+		})
+		return await user.updateProfile({
+			photoURL:photo.url
+		})
+	}
+	catch (error){
+		throw error;
+	}
+}
+
+// delete photo from firestore
+export function deletePhotoFromCollection(photoId){
+	const userUid = firebase.auth().currentUser.uid
+	return db.collection('users').doc(userUid).collection('photos').doc(photoId).delete()
+}
 // useEffect(()=>{
 // 	const unsubscribe = getEventsFromFirestore({
 // 		next:snapshot => dispatch(listenToEvents(snapshot.docs.map(docSnapshot => dataFromSnapshot(docSnapshot)))),

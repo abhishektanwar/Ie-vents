@@ -53,7 +53,7 @@ function EventForm({match}) {
 			// await 
 			// console.log({...values})
 			// setFormOpen(false)
-			history.push('/events')
+			history.push('/account')
 		}
 		catch(error) {
 			toast.error(error.message)

@@ -33,3 +33,11 @@ export function uploadToFirebaseStorage(file,filename){
 	return storageRef.child(`${user.uid}/user_images/${filename}`).put(file);
 	// this will return download url 
 }
+
+// delete photo from storage
+export function deleteFromFirebaseStorage(filename){
+	const userUid = firebase.auth().currentUser.uid;
+	const storageRef = firebase.storage().ref();
+	const photoRef = storageRef.child(`${userUid}/user_images/${filename}`);
+	return photoRef.delete()
+}

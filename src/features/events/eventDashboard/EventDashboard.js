@@ -56,6 +56,7 @@ function EventDashboard() {
 		data : (events)=> dispatch(listenToEvents(events)),
 		dependency:[dispatch]
 	})
+	
 
 
 	return (
@@ -68,8 +69,9 @@ function EventDashboard() {
 						<EventListItemPlaceholder />
 					</>
 				}
+				{events &&
 				<EventList events={events} />
-				
+			}
 			</GridColumn>
 			<GridColumn width={6} >
 				<EventFilter />

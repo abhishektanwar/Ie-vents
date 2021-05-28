@@ -27,6 +27,7 @@ function LoginForm() {
 		}
 		catch(error){
 			console.log("error login",error)
+			toast.error("invalid creds")
 		}
 		
 	}
