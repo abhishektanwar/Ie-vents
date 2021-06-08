@@ -17,10 +17,15 @@ function EventListItem({event}) {
 							<Item.Image size='tiny' circular src={event.hostPhotoURL} />
 							<Item.Content>
 								<Item.Header content={event.title} />
-								<Item.Description style={{display:'flex',justifyContent:'space-between'}}>
-									Hosted by {event.hostedBy}
+								<Item.Description style={{display:'flex'}}>
+									Hosted by <Link style={{marginLeft:'10px',fontSize:'1.2rem'}} to={`/profile/${event.hostUid}`}>{event.hostedBy}</Link> 
 									{event.isCancelled && (
-										<div style={{backgroundColor:'red',maxWidth:'250px' ,color:'white',height:'30px',borderRadius:'5px',textAlign:'center',paddingTop:'5px',paddingLeft:'5px',paddingRight:'5px'}} >
+										<div style={{backgroundColor:'red',maxWidth:'250px' ,color:'white',height:'30px',borderRadius:'5px',textAlign:'center',paddingTop:'5px',paddingLeft:'5px',paddingRight:'5px',
+										position:'absolute',
+										left:'63%',
+										bottom:'10px'
+										
+										}} >
 											<span>This event has been cancelled </span>
 										</div>
 									)}

@@ -31,7 +31,21 @@ export function getEventsFromFirestore(observer){
 }
 
 export function listenToEventsFromFirestore(){
-	return db.collection('events');
+	const user = firebase.auth().currentUser;
+
+	return db.collection('events').orderBy('date');
+	// switch (predicate.get('filter')){
+	// 	case 'isGoing':
+	// 		console.log("isGoing")
+	// 		return eventRef.where('attendeeIds','array-contains',user.uid).where('date','>=',predicate.get('startDate'))
+	// 	case 'isHosting':
+	// 		console.log("isHost")
+	// 		return eventRef.where('hostUid','==',user.uid).where('date','>=',predicate.get('startDate'))
+	// 	default:
+	// 		console.log("isdef",eventRef.where('date','>=',predicate.get('startDate')))
+			
+	// 		return eventRef.where('date','>=',predicate.get('startDate'))
+	// }
 }
 
 export function listenToEventFromFirestore(eventId){
@@ -41,16 +55,21 @@ export function listenToEventFromFirestore(eventId){
 export function addEventToFirestore(event){
 	// console.log("hostedBy:",firebase.auth().currentUser.displayName)
 	// console.log("hostPhotoURL:",firebase.auth().currentUser.photoURL)
+	// ref to currently loggedin user
+	const user = firebase.auth().currentUser
 	return db.collection('events').add({
 		...event,
-		hostedBy:firebase.auth().currentUser.displayName,
+		hostUid:user.uid,
+		hostedBy:user.displayName,
 		isCancelled:false,
-		hostPhotoURL:firebase.auth().currentUser.photoURL,
+		hostPhotoURL:user.photoURL || null,
 		attendees:firebase.firestore.FieldValue.arrayUnion({
-			id:cuid(),
-			displayName:'Diana',
-			photoURL:'https://randomuser.me/api/portraits/men/20.jpg'
-		})
+			id:user.uid,
+			displayName:user.displayName,
+			photoURL:user.photoURL || null
+		}),
+		// with attendeeIds we are going to be able to query to find out which events a user with that specific UID is going to
+		attendeeIds: firebase.firestore.FieldValue.arrayUnion(user.uid)
 	})
 }
 
@@ -160,6 +179,35 @@ export async function setMainPhoto(photo){
 export function deletePhotoFromCollection(photoId){
 	const userUid = firebase.auth().currentUser.uid
 	return db.collection('users').doc(userUid).collection('photos').doc(photoId).delete()
+}
+
+export function addUserAttendance(event){
+	const user = firebase.auth().currentUser;
+	return db.collection('events').doc(event.id).update({
+		attendees:firebase.firestore.FieldValue.arrayUnion({
+			id:user.uid,
+			displayName:user.displayName,
+			photoURL:user.photoURL || null
+		}),
+		// with attendeeIds we are going to be able to query to find out which events a user with that specific UID is going to
+		attendeeIds: firebase.firestore.FieldValue.arrayUnion(user.uid)
+	})
+}
+
+export async function cancelUserAttendance(event){
+	const user = firebase.auth().currentUser;
+	
+	try{
+		const eventDoc = await db.collection('events').doc(event.id).get();
+		return db.collection('events').doc(event.id).update({
+			attendeeIds:firebase.firestore.FieldValue.arrayRemove(user.uid),
+			attendees:eventDoc.data().attendees.filter(attendee => attendee.id !==user.uid)
+
+		})
+	}
+	catch (error){
+		throw error;
+	}
 }
 // useEffect(()=>{
 // 	const unsubscribe = getEventsFromFirestore({

@@ -17,6 +17,14 @@ function EventDashboard() {
 	const {events} = useSelector(state => state.event)
 	const {loading} = useSelector(state => state.async)
 	const dispatch = useDispatch()
+	const [predicate, setPredicate] = useState(new Map([
+		['startDate',new Date()],
+		['filter', 'all']
+	]))
+
+	function handleSetPredicate(key,value){
+		setPredicate(new Map(predicate.set(key,value)))
+	}
 	// useEffect(()=>{
 	// 	// fix this approach
 	// 	// let documents=[]
@@ -74,7 +82,7 @@ function EventDashboard() {
 			}
 			</GridColumn>
 			<GridColumn width={6} >
-				<EventFilter />
+				<EventFilter predicate={predicate} setPredicate={handleSetPredicate} loading={loading} />
 			</GridColumn>
 		</Grid>
 
