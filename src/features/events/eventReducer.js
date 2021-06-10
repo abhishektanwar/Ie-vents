@@ -1,8 +1,9 @@
 import { sampleData } from '../../app/api/sampleData'
-import { CREATE_EVENT, DELETE_EVENT, FETCH_EVENT, UPDATE_EVENT } from './eventConstants'
+import { CREATE_EVENT, DELETE_EVENT, FETCH_EVENT, LISTEN_TO_EVENT_CHAT, UPDATE_EVENT } from './eventConstants'
 
 const initialState = {
 	events:[],
+	comments:[]
 }
 
 
@@ -27,6 +28,11 @@ export default function eventReducer(state = initialState,{type,payload}){
 			return {
 				...state,
 				events:payload
+			}
+		case  LISTEN_TO_EVENT_CHAT:
+			return{
+				...state,
+				comments:payload
 			}
 		default :
 		return state;
