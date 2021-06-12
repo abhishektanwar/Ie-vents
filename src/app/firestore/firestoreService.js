@@ -239,7 +239,8 @@ export async function followUser(profile){
 
 export async function unfollowUser(profile){
 	const user = firebase.auth().currentUser;
-
+	console.log("pr",profile.id)
+	console.log("us",user.uid)
 	try{
 		await db.collection('following').doc(user.uid).collection('userFollowing').doc(profile.id).delete();
 		await db.collection('following').doc(profile.id).collection('userFollowers').doc(user.uid).delete();
@@ -262,6 +263,11 @@ export function getFollowersCollection(profileId){
 
 export function getFollowingCollection(profileId){
 	return db.collection('following').doc(profileId).collection('userFollowing')
+}
+
+export function getFollowingDoc(profileId){
+	const userUid = firebase.auth().currentUser.uid;
+	return db.collection('following').doc(userUid).collection('userFollowing').doc(profileId).get();
 }
 // useEffect(()=>{
 // 	const unsubscribe = getEventsFromFirestore({

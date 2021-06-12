@@ -1,4 +1,4 @@
-import { LISTEN_TO_CURRENT_USER_PROFILE,LISTEN_TO_FOLLOWERS,LISTEN_TO_FOLLOWINGS,LISTEN_TO_SELECTED_USER_PROFILE, LISTEN_TO_USER_PHOTOS } from "./profileContants";
+import { CLEAR_FOLLOWINGS, LISTEN_TO_CURRENT_USER_PROFILE,LISTEN_TO_FOLLOWERS,LISTEN_TO_FOLLOWINGS,LISTEN_TO_SELECTED_USER_PROFILE, LISTEN_TO_USER_PHOTOS, SET_FOLLOW_USER, SET_UNFOLLOW_USER } from "./profileContants";
 
 const initialState = {
 	currentUserProfile:null,
@@ -6,6 +6,7 @@ const initialState = {
 	photos:[],
 	followers:[],
 	followings:[],
+	followingUser:false,
 }
 
 export default function profileReducer(state=initialState,{type,payload}){
@@ -34,6 +35,22 @@ export default function profileReducer(state=initialState,{type,payload}){
 			return{
 				...state,
 				followings:payload
+			}
+		case SET_FOLLOW_USER:
+			return{
+				...state,
+				followingUser:true
+			}
+		case SET_UNFOLLOW_USER:
+			return{
+				...state,
+				followingUser:false
+			}
+		case CLEAR_FOLLOWINGS:
+			return{
+				...state,
+				followings:[],
+				followers:[]
 			}
 			
 		default: {

@@ -10,8 +10,8 @@ function ProfileContent({profile,isCurrentUser}) {
 		{menuItem:'About',render:()=> <AboutTab profile={profile} isCurrentUser={isCurrentUser} />},
 		{menuItem:'Photos',render:()=><PhotosTab profile={profile} isCurrentUser={isCurrentUser}  />},
 		{menuItem:'Events',render:()=><Tab.Pane>Events</Tab.Pane>},
-		{menuItem:'Followers',render:()=><FollowingTab profile={profile} activeTab={activeTab} />},
-		{menuItem:'Following',render:()=><FollowingTab profile={profile} activeTab={activeTab} />},
+		{menuItem:'Followers',render:()=><FollowingTab key={profile.id} profile={profile} activeTab={activeTab} />},
+		{menuItem:'Following',render:()=><FollowingTab key={profile.id} profile={profile} activeTab={activeTab} />},
 	]
 	return (
 		<Tab 
