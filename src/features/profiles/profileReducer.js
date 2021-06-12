@@ -1,9 +1,11 @@
-import { LISTEN_TO_CURRENT_USER_PROFILE,LISTEN_TO_SELECTED_USER_PROFILE, LISTEN_TO_USER_PHOTOS } from "./profileContants";
+import { LISTEN_TO_CURRENT_USER_PROFILE,LISTEN_TO_FOLLOWERS,LISTEN_TO_FOLLOWINGS,LISTEN_TO_SELECTED_USER_PROFILE, LISTEN_TO_USER_PHOTOS } from "./profileContants";
 
 const initialState = {
 	currentUserProfile:null,
 	selectedUserProfile:null,
-	photos:[]
+	photos:[],
+	followers:[],
+	followings:[],
 }
 
 export default function profileReducer(state=initialState,{type,payload}){
@@ -22,7 +24,18 @@ export default function profileReducer(state=initialState,{type,payload}){
 			return {
 				...state,
 				photos:payload
-			}	
+			}
+		case LISTEN_TO_FOLLOWINGS:
+			return {
+				...state,
+				followers:payload
+			}
+		case LISTEN_TO_FOLLOWERS:
+			return{
+				...state,
+				followings:payload
+			}
+			
 		default: {
 			return state;
 		}

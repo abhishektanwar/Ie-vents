@@ -1,4 +1,4 @@
-import { LISTEN_TO_CURRENT_USER_PROFILE, LISTEN_TO_SELECTED_USER_PROFILE, LISTEN_TO_USER_PHOTOS } from "./profileContants";
+import { LISTEN_TO_CURRENT_USER_PROFILE, LISTEN_TO_FOLLOWERS, LISTEN_TO_FOLLOWINGS, LISTEN_TO_SELECTED_USER_PROFILE, LISTEN_TO_USER_PHOTOS } from "./profileContants";
 
 export function listenToCurrentUserProfile(profile){
 	return {
@@ -18,5 +18,20 @@ export function listenToUserPhotos(photos){
 	return {
 		type:LISTEN_TO_USER_PHOTOS,
 		payload:photos
+	}
+}
+
+export function listenToFollowers(followings){
+	return {
+		type:LISTEN_TO_FOLLOWINGS,
+		payload:followings
+	}
+}
+
+
+export function listenToFollowings(followers){
+	return {
+		type:LISTEN_TO_FOLLOWERS,
+		payload:followers
 	}
 }
