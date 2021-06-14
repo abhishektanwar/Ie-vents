@@ -14,6 +14,7 @@ function EventForm({match}) {
 	// const selectedEvent = useSelector(state => state.event.events.find(e => e.id === match.params.id))
 	// const {selectedEvent} = useSelector(state=>state.event)
 	// using useSelector conditionally
+	const {currentUser} = useSelector(state=>state.auth)
 	const selectedEvent = useSelector(state =>{
 		if(match.params.id){
 			return state.event.events.find(e => e.id === match.params.id)
@@ -53,7 +54,9 @@ function EventForm({match}) {
 			// await 
 			// console.log({...values})
 			// setFormOpen(false)
-			history.push('/account')
+			history.push('/events')
+			// history.push('/profile/'+currentUser.uid)
+
 		}
 		catch(error) {
 			toast.error(error.message)

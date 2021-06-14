@@ -77,8 +77,9 @@ function EventDashboard() {
 						<EventListItemPlaceholder />
 					</>
 				}
-				{events &&
+				{events && 
 				<EventList events={events} />
+				
 			}
 			</GridColumn>
 			<GridColumn width={6} >

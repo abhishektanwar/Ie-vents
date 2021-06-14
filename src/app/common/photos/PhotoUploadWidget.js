@@ -36,23 +36,23 @@ function PhotoUploadWidget({setEditMode}) {
 	return (
 		<Grid>
 			<Grid.Column width = {1} />
-			<Grid.Column width={4} >
-				<Header color='teal' content = 'Step 1: Add photo' />
+			<Grid.Column width={14} >
+				<Header color='teal' content = 'Add photo' />
 				<PhotoWidgetDropzone setFiles={setFiles} />
 				<Button loading={loading} style={{width:100}} positive icon='check' onClick={handleUploadImage} />
 				<Button style={{width:100}} icon='close' />
 			</Grid.Column>
 			<Grid.Column width = {1} />
 
-			<Grid.Column width={4} >
+			{/* <Grid.Column width={4} >
 				<Header color='teal' content = 'Step 2: Resize' />
-				{/* {files.length > 0 &&
+				{files.length > 0 &&
 				<PhotoWidgetCropper setImage={setImage} imagePreview = {files[0].preview} />
-				} */}
+				}
 			</Grid.Column>
-			<Grid.Column width = {1} />
+			<Grid.Column width = {1} /> */}
 
-			<Grid.Column width={4} >
+			{/* <Grid.Column width={4} >
 				<Header color='teal' content = 'Step 3: Preview & Upload' />
 				{files.length > 0 &&
 					<>
@@ -63,7 +63,7 @@ function PhotoUploadWidget({setEditMode}) {
 					</>
 				}
 
-			</Grid.Column>
+			</Grid.Column> */}
 		</Grid>
 	)
 }
